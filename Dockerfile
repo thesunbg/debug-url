@@ -7,15 +7,15 @@ RUN apt-get install -y python3.9
 RUN apt-get install -y pip
 RUN pip install --upgrade pip
 
-# install selenium
+# install playwrite
 RUN pip install flask
 RUN pip install playwright
 RUN playwright install
 RUN playwright install-deps
+RUN pip install python-Wappalyzer
 RUN apt-get install -y dbus
 #USER seluser
 WORKDIR /srv
-# RUN pip install webdriver-manager
 COPY . /srv
 ENV FLASK_APP=app
 CMD ["flask","--app", "main", "run", "--host", "0.0.0.0"]

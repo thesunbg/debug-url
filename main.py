@@ -1,11 +1,7 @@
-# from selenium import webdriver
-# from selenium.webdriver.chrome.service import Service
-# from selenium.webdriver.chrome.options import Options
-# from seleniumwire import webdriver
-
 from flask import Flask
 from flask import request, jsonify
 from playwright.sync_api import sync_playwright 
+from Wappalyzer import Wappalyzer, WebPage
 import base64
 
 app = Flask(__name__)
@@ -31,14 +27,25 @@ def debug():
         ) 
         page.goto(url, wait_until="networkidle", timeout=90000) 
     
-        # print(page.content()) 
+        content = page.content()
 
         #screenshot
         screenshot_bytes = page.screenshot(full_page=True)
     
         page.context.close() 
         browser.close()
-        return jsonify(status = "success", data = data, screenshot= base64.b64encode(screenshot_bytes).decode()), 200
+        return jsonify(status = "success", content = content, data = data, screenshot= base64.b64encode(screenshot_bytes).decode()), 200
+
+@app.route('/wappalyzer', methods = ['POST'])
+def wappalyzer():
+    url = request.json.get('url')
+    if(url == None):
+        return jsonify(status = 'error', message= 'url required'), 500
+    
+    webpage = WebPage.new_from_url(url)
+    wappalyzer = Wappalyzer.latest()
+    data = wappalyzer.analyze_with_versions_and_categories(webpage)
+    return jsonify(status = "success", data = data), 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")

@@ -18,4 +18,4 @@ RUN apt-get install -y dbus
 WORKDIR /srv
 COPY . /srv
 ENV FLASK_APP=app
-CMD ["flask","--app", "main", "run", "--host", "0.0.0.0"]
+CMD ["flask","--app", "main", "run", "--host", "0.0.0.0", "--port", "6000"]

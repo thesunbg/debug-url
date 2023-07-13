@@ -9,7 +9,6 @@ app = Flask(__name__)
 
 @app.route('/debug', methods = ['POST'])
 def debug():
-    print('xxxx', flush=True)
     url = request.json.get('url')
     if(url == None):
         return jsonify(status = 'error', message= 'url required'), 500
@@ -33,8 +32,7 @@ def debug():
         page.on("console", lambda msg: console.append({
             "type": msg.type, 
             "text": msg.text,
-            "location": msg.location,
-            "args": msg.args
+            "location": msg.location
         }))
         
         page.goto(url, wait_until="networkidle", timeout=90000) 
@@ -42,10 +40,15 @@ def debug():
 
         #screenshot
         screenshot_bytes = page.screenshot(full_page=True)
-    
+        
+        try:
+            screenshot = base64.b64encode(screenshot_bytes).decode()
+        except:
+            ...
+
         page.context.close() 
         browser.close()
-        return jsonify(status = "success", content = content, data = data, console = console, screenshot= base64.b64encode(screenshot_bytes).decode()), 200
+        return jsonify(status = "success", content = content, data = data, console = console, screenshot= screenshot), 200
 
 @app.route('/wappalyzer', methods = ['POST'])
 def wappalyzer():

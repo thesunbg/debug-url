@@ -35,7 +35,8 @@ def debug():
             "location": msg.location
         }))
         
-        page.goto(url, timeout=90000) 
+        page.goto(url, wait_until="networkidle", timeout=90000) 
+        page.wait_for_load_state("networkidle")
         content = page.content()
 
         #screenshot

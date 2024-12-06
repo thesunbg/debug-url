@@ -36,6 +36,7 @@ def debug():
         }))
         
         page.goto(url, timeout=90000) 
+        page.wait_for_load_state("networkidle")
         content = page.content()
 
         #screenshot

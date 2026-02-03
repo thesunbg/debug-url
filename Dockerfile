@@ -13,6 +13,7 @@ RUN pip install playwright
 RUN playwright install
 RUN playwright install-deps
 RUN pip install python-Wappalyzer
+RUN pip install playwright-stealth
 RUN apt-get install -y dbus
 #USER seluser
 WORKDIR /srv

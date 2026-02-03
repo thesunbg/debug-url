@@ -200,4 +200,8 @@ def wappalyzer():
         return jsonify(status = 'error', message = e.message), 500
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     app.run(host="0.0.0.0", port=5002, debug=True)
+=======
+    app.run(host="0.0.0.0", port=6000, debug=True)
+>>>>>>> 02711d3784eca01873ac61d304589d5f26c8ad4e
